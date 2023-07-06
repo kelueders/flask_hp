@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<!-- Flash Flash Message to User -->
+{% with messages = get_flashed_messages(with_categories = true) %}
+    {% if messages %}
+        {% for cat, msg in messages %}
+            {% if cat == 'auth-success' %}
+                <div class="container">
+                    {{ msg }}
+                    <button type="button" class="close" data-dismiss="alert" onclick="this.parentElement.style.display='none'">&times;</button>     <!-- &times; is an x symbol -->
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<header class="hero-section">
+    <h3 class="header-text">Welcome to the Harry Potter Character Collection, {{ current_user.username }}!</h3>
+    <main class="container book_form">
+        <div class="row">
+            <aside class="col-12 col-md-6">
+                <h2>Add a Character to Your Collection!</h2>
+                {% include 'char_form.html' %}
+            </aside>
+        </div>
+    </main>
+</header>
+
+<div class="container">
+    <h3>Here are your profile details</h3>
+    <ul class="list-group">
+        <li class="list-group-item">Email: {{ current_user.email }}</li>
+        <li class="list-group-item">Token: {{ current_user.token }}</li>    
+    </ul>
+    <div class="row">
+        {% for character in characters %}
+        <div class="card" style="width: 18rem;">
+            <img src="https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg" class="card-img-top" alt="open book">
+            <div class="card-body">
+                <h5 class="card-title">{{ character.name }}</h5>
+                <p class="card-text">{{ character.description }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">House: {{character.house}}</li>
+                <li class="list-group-item">Nationality: {{ character.nationality }}</li>
+                <li class="list-group-item">Occupation: {{ character.occupation}} </li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="card-link">Update </a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}
